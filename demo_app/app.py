@@ -2,40 +2,44 @@
 demo_app Flask app
 
 Simple example interface to send WhatsApp messages using the thu_messaging library.
+Now includes SQLAlchemy integration for messaging database.
 """
 
 import os
 from flask import Flask, render_template, request, redirect, flash
-
 from dotenv import load_dotenv
+from flask_migrate import Migrate
+
+import thu_messaging.models
+
+from thu_messaging.extensions.database import db
+from thu_messaging.whatsapp.client import WhatsAppMessenger
+# Optional: import Message model for future use
+# from thu_messaging.models.message import Message
+from demo_app.routes.main import main_bp
+from demo_app.routes.chats import chats_bp
+from demo_app.routes.webhook import webhook_bp
+
+
 load_dotenv()
 
+def create_app():
+    app = Flask(__name__)
+    app.secret_key = os.getenv("FLASK_SECRET", "dev-secret")
 
-from thu_messaging.whatsapp.client import WhatsAppMessenger
+    # === 🔌 Database Setup ===
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "connect_args": {"options": "-c timezone=utc"}
+    }
 
-app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET", "dev-secret")  # for flash messages
+    db.init_app(app)
+    migrate = Migrate(app, db)
 
-# Read token and sender ID from env (or fallback to dummy values for dev)
-WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN", "your_token_here")
-WHATSAPP_PHONE_ID = os.getenv("WHATSAPP_PHONE_ID", "your_phone_number_id")
+    
+    app.register_blueprint(main_bp)
+    app.register_blueprint(chats_bp, url_prefix="/chats")
+    app.register_blueprint(webhook_bp)
 
-# Instantiate the WhatsApp client
-messenger = WhatsAppMessenger(token=WHATSAPP_TOKEN, sender_id=WHATSAPP_PHONE_ID)
-
-
-@app.route("/", methods=["GET", "POST"])
-def index():
-    if request.method == "POST":
-        phone = request.form["phone"]
-        message = request.form["message"]
-
-        try:
-            result = messenger.send_message(to=phone, content=message)
-            flash(f"Message sent to {phone} ✅", "success")
-        except Exception as e:
-            flash(f"Error: {str(e)}", "danger")
-
-        return redirect("/")
-
-    return render_template("index.html")
+    return app
