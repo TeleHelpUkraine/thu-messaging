@@ -1,0 +1,9 @@
+- [ ] **Set up Flask App Factory**
+- [ ] **Create SQLAlchemy Message model**
+- [ ] **Design chat UI (Jinja2 + optional JS/React)**
+- [ ] **Create /send_message route**
+- [ ] **Create /webhook for incoming messages**
+- [ ] **Add pytest unit tests**
+- [ ] **Write documentation for setup**
+- [ ] **Add GitHub Actions CI**
+- [ ] **Label issues: `good first issue`, `help wanted`**
