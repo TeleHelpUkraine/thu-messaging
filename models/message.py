@@ -10,4 +10,4 @@ class Message(db.Model):
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     messenger = db.Column(db.String(20), default='WhatsApp')
-    metadata = db.Column(db.JSON, nullable=True)
+    message_metadata = db.Column(db.JSON, nullable=True)
