@@ -1,12 +1,20 @@
+from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
+import os
+from dotenv import load_dotenv
+
+db = SQLAlchemy()
 
 def create_app():
+    load_dotenv()
+
     app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # Register Blueprints
-    from app.main.routes.webhook import webhook_bp as main_bp
-    app.register_blueprint(main_bp)
+    db.init_app(app)
 
-    # Optional: configure DB, CORS, logging, etc.
+    from app.main.routes.webhook import webhook_bp
+    app.register_blueprint(webhook_bp)
 
-    return appfrom flask import Flask
+    return app
