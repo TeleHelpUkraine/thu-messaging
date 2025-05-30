@@ -134,4 +134,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-Made with ❤️ by [TeleHelp Ukraine](https://telehelpukraine.org/)
+Made with ❤️ by [TeleHelp Ukraine](https://telehelpukraine.com/)
