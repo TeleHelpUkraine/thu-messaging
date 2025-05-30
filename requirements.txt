@@ -1,5 +1,11 @@
-Flask
-Flask-SQLAlchemy
-python-dotenv
-pywa[flask,cryptography]
-psycopg2-binary
+Flask==2.2.2
+Flask-SQLAlchemy==3.0.2
+python-dotenv==0.20.0
+pywa[flask,cryptography]==1.0.2
+psycopg2-binary==2.9.3
+
+# For deployment (Heroku, Railway, etc.)
+# gunicorn==23.0.0
+
+# For testing
+pytest==8.1.1

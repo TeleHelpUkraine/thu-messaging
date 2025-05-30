@@ -6,3 +6,4 @@ webhook_bp = Blueprint('webhook', __name__)
 def receive():
     data = request.get_json()
     return jsonify({'status': 'received'})
+
