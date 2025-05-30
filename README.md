@@ -79,8 +79,8 @@ Volunteers can use the following `curl` command without needing any secret keys:
 ```bash
 curl -X POST http://localhost:5000/send_whatsapp \
   -H "Content-Type: application/json" \
-  -H "X-Access-Key: THU2025proxy" \
-  -H "VOLUNTEER_ACCESS_KEY: THU2025proxy" \
+  -H "X-Access-Key: {your_access_token}" \
+  -H "VOLUNTEER_ACCESS_KEY: {your_access_token}" \
   -d '{
     "messaging_product": "whatsapp",
     "to": "+12049220575",
